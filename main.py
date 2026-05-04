@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from google.cloud import bigquery
-from google.api_core.exceptions import DefaultCredentialsError
+from google.auth.exceptions import DefaultCredentialsError
 import joblib
 import pandas as pd
 
