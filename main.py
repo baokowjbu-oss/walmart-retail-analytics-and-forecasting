@@ -29,7 +29,7 @@ def predict_demand(request: CleanRequest):
         encoded_data[f'promotion_type_{request.promotion}'] = 1
         
     if f'weekday_{request.day}' in encoded_data:
-        encoded_data[f'weekday_{request.day}'] = 1
+        encoded_data[f'week_day_{request.day}'] = 1
         
     df = pd.DataFrame([encoded_data])
     prediction = model.predict(df)
