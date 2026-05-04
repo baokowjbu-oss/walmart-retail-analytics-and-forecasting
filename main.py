@@ -35,3 +35,26 @@ def predict_demand(request: CleanRequest):
     prediction = model.predict(df)
     
     return {"predicted_demand": round(prediction[0], 2)}
+
+@app.get("/analytics/top-sellers"):
+def get_top_sellers():
+    query = """
+    SELECT 
+        pro.product_name, 
+        SUM(transac.quantity_sold) AS total_product_sale
+    FROM `extended-altar-423112-j9.Walmart.fact_transaction` transac
+    JOIN  `extended-altar-423112-j9.Walmart.dim_product`pro ON transac.product_id = pro.product_id
+    GROUP BY pro.product_name 
+    ORDER BY SUM(transac.quantity_sold) DESC
+    LIMIT 5"""
+    query_job = client.query(query)
+    results = query_job.result()
+    top_sellers = []
+    for row in results:
+        top_sellers.append(
+            {
+               "product_name": row.product_name,
+                "total_sales": row.total_product_sale
+            }
+        )
+    return {"top_sellers": top_sellers}
