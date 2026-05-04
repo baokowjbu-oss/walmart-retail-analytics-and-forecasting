@@ -1,11 +1,14 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from google.cloud import bigquery
 import joblib
 import pandas as pd
 
 model = joblib.load('demand_model.pkl')
 
 app = FastAPI(title="Walmart Demand API")
+
+client = bigquery.Client()
 
 class CleanRequest(BaseModel):
     price: float
