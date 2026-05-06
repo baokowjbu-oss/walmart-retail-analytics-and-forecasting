@@ -117,4 +117,36 @@ def get_top_stores():
         return {"top_stores" : [{"store_id": row.store_id, "total_sales" : row.total_sales} for row in query_result]}
     except Exception as e:
         return {"error" : str(e)}
-    
+@app.get("analytics/worst-stores")
+def get_worst_stores():
+    try:
+        client = bigquery.Client()
+        query = """
+        SELECT 
+            store_id, 
+            SUM(quantity_sold) AS total_sales
+        FROM `extended-altar-423112-j9.Walmart.fact_transaction`
+        GROUP BY store_id 
+        ORDER BY SUM(quantity_sold) ASC
+        LIMIT 5"""
+        query_result = client.query(query).result()
+        return {"worst_stores" : [{"store_id": row.store_id, "total_sales" : row.total_sales} for row in query_result]}
+    except Exception as e:
+        return {"error" : str(e)}
+@app.get("analytics/most-pay")
+def get_most_paying_customer:
+    try:
+        client = bigquery.Client()
+        query = """
+        SELECT 
+            customer_id, 
+            CAST(SUM(quantity_sold * unit_price) AS INT64) AS total_spent
+        FROM `extended-altar-423112-j9.Walmart.fact_transaction`
+        GROUP BY customer_id 
+        ORDER BY total_spent DESC
+        LIMIT 5
+        """
+        query_result = client.query(query).result()
+        return {"top_pay_customer" : [{"customer_id": row.customer_id, "total_spent" : row.total_spent} for row in query_result]}
+    except Exception as e:
+        return {"error" : str(e)}
