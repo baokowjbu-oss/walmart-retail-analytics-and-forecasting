@@ -101,3 +101,20 @@ def get_worst_sellers():
             return {"worst_sellers": worst_sellers}
     except Exception as e:
         return {"error" : str(e)}
+@app.get("analytics/top-stores")
+def get_top_stores():
+    try:
+        client = bigquery.Client()
+        query = """
+        SELECT 
+            store_id, 
+            SUM(quantity_sold) AS total_sales
+        FROM `extended-altar-423112-j9.Walmart.fact_transaction`
+        GROUP BY store_id 
+        ORDER BY SUM(quantity_sold) DESC 
+        LIMIT 5"""
+        query_result = client.query(query).result()
+        return {"top_stores" : [{"store_id": row.store_id, "total_sales" : row.total_sales} for row in query_result]}
+    except Exception as e:
+        return {"error" : str(e)}
+    
