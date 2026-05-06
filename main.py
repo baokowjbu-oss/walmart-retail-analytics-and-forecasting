@@ -2,13 +2,20 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from google.cloud import bigquery
 from google.auth.exceptions import DefaultCredentialsError
+from fastapi.middleware.cors import CORSMiddleware
 import joblib
 import pandas as pd
 
 model = joblib.load('demand_model.pkl')
 
 app = FastAPI(title="Walmart Demand API")
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],  
+    allow_headers=["*"],
+)
 class CleanRequest(BaseModel):
     price: float
     is_holiday: bool
