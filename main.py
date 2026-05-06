@@ -48,7 +48,6 @@ def predict_demand(request: CleanRequest):
 @app.get("/analytics/top-sellers")
 def get_top_sellers():
     try:
-        # Moved the client inside the function so it doesn't crash the server on startup
         client = bigquery.Client()
         query = """
         SELECT 
@@ -73,7 +72,32 @@ def get_top_sellers():
             )
         return {"top_sellers": top_sellers}
         
-    except DefaultCredentialsError:
-        return {"error": "Server is not authenticated with Google Cloud yet!"}
     except Exception as e:
         return {"error": str(e)}
+@app.get("analytics/worst-products")
+def get_worst_sellers():
+    try:
+        client = bigquery.Client()
+        query = """
+            SELECT 
+                pro.product_name, 
+                SUM(transac.quantity_sold) AS total_product_sale
+            FROM `extended-altar-423112-j9.Walmart.fact_transaction` transac
+            JOIN  `extended-altar-423112-j9.Walmart.dim_product` pro ON transac.product_id = pro.product_id
+            GROUP BY pro.product_name 
+            ORDER BY SUM(transac.quantity_sold) ASC
+            LIMIT 5"""
+        query_job = client.query(query)
+        query_result = query_job.result()
+        worst_sellers = []
+        for row in query_result:
+            worst_sellers.append
+            (
+                {
+                    "product_name" : row.product_name
+                    "total_sale" : row.total_product_sale
+                }
+            )
+            return {"worst_sellers": worst_sellers}
+    except Exception as e:
+        return {"error" : str(e)}
