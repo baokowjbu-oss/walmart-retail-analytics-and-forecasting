@@ -29,7 +29,7 @@ def predict_demand(request: CleanRequest):
 
     encoded_data = {col: 0 for col in expected_columns}
     encoded_data['unit_price'] = request.price
-    encoded_data['holiday_indicator'] = 1 if request.is_holiday else 0
+    encoded_data['is_holiday'] = 1 if request.is_holiday else 0
     
     if f'weather_conditions_{request.weather}' in encoded_data:
         encoded_data[f'weather_conditions_{request.weather}'] = 1
@@ -43,7 +43,7 @@ def predict_demand(request: CleanRequest):
     df = pd.DataFrame([encoded_data])
     prediction = model.predict(df)
     
-    return {"predicted_demand": round(prediction[0], 2)}
+    return {"predicted_demand": round(float(prediction[0], 2))}
 
 @app.get("/analytics/top-sellers")
 def get_top_sellers():
