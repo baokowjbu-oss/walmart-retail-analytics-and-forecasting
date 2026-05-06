@@ -43,7 +43,7 @@ def predict_demand(request: CleanRequest):
     df = pd.DataFrame([encoded_data])
     prediction = model.predict(df)
     
-    return {"predicted_demand": round(float(prediction[0], 2))}
+    return {"predicted_demand": round(float(prediction[0]), 2)}
 
 @app.get("/analytics/top-sellers")
 def get_top_sellers():
