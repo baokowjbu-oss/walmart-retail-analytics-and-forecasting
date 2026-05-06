@@ -94,7 +94,7 @@ def get_worst_sellers():
             worst_sellers.append
             (
                 {
-                    "product_name" : row.product_name
+                    "product_name" : row.product_name,
                     "total_sale" : row.total_product_sale
                 }
             )
