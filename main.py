@@ -134,7 +134,7 @@ def get_worst_stores():
     except Exception as e:
         return {"error" : str(e)}
 @app.get("analytics/most-pay")
-def get_most_paying_customer:
+def get_most_paying_customer():
     try:
         client = bigquery.Client()
         query = """
