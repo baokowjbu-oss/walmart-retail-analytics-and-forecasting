@@ -161,7 +161,7 @@ def get_sales_trend(time_interval: str = "month", start_date: Optional[str] = No
             where_clause = f"WHERE date_id BETWEEN {start_int} AND {end_int}"
         elif start_date:
             start_int = int(start_date.replace("-", ""))
-            where_clause = f"WHERE date_id >= {start_date}"
+            where_clause = f"WHERE date_id >= {start_int}"
         elif end_date:
             end_int = int(end_date.replace("-", ""))
             where_clause = f"WHERE date_id <= {end_int}"
