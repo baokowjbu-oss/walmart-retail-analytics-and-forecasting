@@ -150,3 +150,44 @@ def get_most_paying_customer():
         return {"top_pay_customer" : [{"customer_id": row.customer_id, "total_spent" : row.total_spent} for row in query_result]}
     except Exception as e:
         return {"error" : str(e)}
+@app.get("analytics/sales-recap")
+def get_sales_trend(time_interval: str = "month"):
+    try:
+        valid_time_interval = ["day", "week", "month", "quarter"]
+        if time_interval.lower() not in valid_time_interval:
+            return {"error" : "invalid time interval. Valid time interval is day, week, month, quarter."}
+        client = bigquery.Client()
+        query = f"""
+        WITH Daily_stats AS (
+          SELECT 
+              PARSE_DATE('%Y%m%d', CAST(date_id AS STRING)) AS full_date,
+              SUM(quantity_sold * unit_price) AS total_revenue,
+              SUM(quantity_sold * unit_price * 0.6) AS total_cost,
+          FROM `extended-altar-423112-j9.Walmart.fact_transaction`
+          GROUP BY date_id
+        )
+        SELECT 
+            DATE_TRUNC(full_date, {time_interval.upper()}) AS trend_date,
+            SUM(total_revenue) AS revenue,
+            SUM(total_cost) AS cost,
+            (SUM(total_revenue) - SUM(total_cost)) AS profit, 
+            SAFE_DIVIDE((SUM(total_revenue) - SUM(total_cost)), SUM(total_revenue)) * 100 AS gross_margin
+        FROM Daily_stats
+        GROUP BY trend_date 
+        ORDER BY trend_date ASC
+        """
+        query_result = client.query(query).result()
+        trend_data = []
+        for row in query_result:
+            trend_date.append({
+                "trend_date" : str(row.trend_date),
+                "revenue" : round(row.revenue,2),
+                "cost" : round(row.cost,2),
+                "profit" : round(row.profit,2),
+                "gross_margin" : round(row.gross_margin,2) if row.gross_margin else 0
+            })
+        return {"time_interval" : time_interval, "sales_trend" : trend_data}
+    except Exception as e:
+        return {"error" : str(e)}
+    
+        
