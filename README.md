@@ -1,4 +1,5 @@
 1) **Analysis of Business Performance and Predicting Demand of Product of Supermarket chain Walmart**
+
 💻**Technology used**
 - `Python`
 - `SQL`
@@ -10,8 +11,10 @@
 - `Pandas`
 
 
-🌐**FastAPI Server**
+🌐**FastAPI Render Web Service**:
+
 `https://walmart-api-y60v.onrender.com/docs#/` 
+
 You can check out this link to get the data. Note that `predict` is the API endpoint for the machine learning model.
 
 This project will use Google Bigquery for its data warehouse storage. The data warehouse is structured using Star Schema to minimize storage and optimize perfomance for analysis tool, (see `section 3`). After that is the cleaning and data prepping for the machine learning (see `Section 4`). Finally this project run SQL to report on the business perfomance by revenue, profit, top selling product, worst selling store, ... and implement a servers to host API endpoints for those functions (see `section 5`)
@@ -58,4 +61,5 @@ During the profling of the data to find correlations between `reorder_point` and
 5) **API Endpoint Setup**
 - Use render to host a server
 - Use FastAPI to create API endpoints, and load the machine learning model, ran SQL to report data such as best/worst selling product and top/worst store based on their total sales, most paying customer based on his/her spending. Finally sales data (revenue, profit, cost, gross margin) depending on user input date. 
+- Use render to host a web service
 ![alt text](images/fast_api_server.png)
