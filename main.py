@@ -133,7 +133,7 @@ def get_worst_stores():
         return {"worst_stores" : [{"store_id": row.store_id, "total_sales" : row.total_sales} for row in query_result]}
     except Exception as e:
         return {"error" : str(e)}
-@app.get("analytics/most-pay")
+@app.get("/analytics/most-pay")
 def get_most_paying_customer():
     try:
         client = bigquery.Client()
@@ -162,7 +162,7 @@ def get_sales_trend(time_interval: str = "month"):
           SELECT 
               PARSE_DATE('%Y%m%d', CAST(date_id AS STRING)) AS full_date,
               SUM(quantity_sold * unit_price) AS total_revenue,
-              SUM(quantity_sold * unit_price * 0.6) AS total_cost,
+              SUM(quantity_sold * unit_price * 0.6) AS total_cost
           FROM `extended-altar-423112-j9.Walmart.fact_transaction`
           GROUP BY date_id
         )
@@ -179,7 +179,7 @@ def get_sales_trend(time_interval: str = "month"):
         query_result = client.query(query).result()
         trend_data = []
         for row in query_result:
-            trend_date.append({
+            trend_data.append({
                 "trend_date" : str(row.trend_date),
                 "revenue" : round(row.revenue,2),
                 "cost" : round(row.cost,2),
