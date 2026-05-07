@@ -8,8 +8,11 @@
 - `Render.com`
 - `Scikit-learn`
 - `Pandas`
+
+
 🌐**FastAPI Server**
-`https://walmart-api-y60v.onrender.com/docs#/`: You can check out this link to get the data. Note that `predict` is the API endpoint for the machine learning model.
+`https://walmart-api-y60v.onrender.com/docs#/` 
+You can check out this link to get the data. Note that `predict` is the API endpoint for the machine learning model.
 
 This project will use Google Bigquery for its data warehouse storage. The data warehouse is structured using Star Schema to minimize storage and optimize perfomance for analysis tool, (see `section 3`). After that is the cleaning and data prepping for the machine learning (see `Section 4`). Finally this project run SQL to report on the business perfomance by revenue, profit, top selling product, worst selling store, ... and implement a servers to host API endpoints for those functions (see `section 5`)
 1) **Data Profiling & Quality Assessment**
