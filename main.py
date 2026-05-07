@@ -91,13 +91,10 @@ def get_worst_sellers():
         query_result = query_job.result()
         worst_sellers = []
         for row in query_result:
-            worst_sellers.append
-            (
-                {
-                    "product_name" : row.product_name,
-                    "total_sale" : row.total_product_sale
-                }
-            )
+            worst_sellers.append({
+                "product_name" : row.product_name,
+                "total_sale" : row.total_product_sale
+            })
             return {"worst_sellers": worst_sellers}
     except Exception as e:
         return {"error" : str(e)}
@@ -151,11 +148,21 @@ def get_most_paying_customer():
     except Exception as e:
         return {"error" : str(e)}
 @app.get("/analytics/sales-recap")
-def get_sales_trend(time_interval: str = "month"):
+def get_sales_trend(time_interval: str = "month", start_date: Optional[str] = None, end_date: Optional[str]):
     try:
         valid_time_interval = ["day", "week", "month", "quarter"]
         if time_interval.lower() not in valid_time_interval:
             return {"error" : "invalid time interval. Valid time interval is day, week, month, quarter."}
+        if start_date and end_date:
+            start_int = int(start_date.replace("-", ""))
+            end_int = int(end_date.replace("-", ""))
+            where_clause = f"WHERE date_id BETWEEN {start_int} AND {end_int}"
+        elif start_date:
+            start_int = int(start_date.replace("-", ""))
+            where_clause = f"WHERE date_id >= {start_date}"
+        elif end_date:
+            end_int = int(end_date.replace("-", ""))
+            where_clause = f"WHERE date_id <= {end_int}"
         client = bigquery.Client()
         query = f"""
         WITH Daily_stats AS (
@@ -164,6 +171,7 @@ def get_sales_trend(time_interval: str = "month"):
               SUM(quantity_sold * unit_price) AS total_revenue,
               SUM(quantity_sold * unit_price * 0.6) AS total_cost
           FROM `extended-altar-423112-j9.Walmart.fact_transaction`
+          {where_clause}
           GROUP BY date_id
         )
         SELECT 
