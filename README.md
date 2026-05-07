@@ -1,6 +1,18 @@
 1) **Analysis of Business Performance and Predicting Demand of Product of Supermarket chain Walmart**
+💻**Technology used**
+- `Python`
+- `SQL`
+- `Google BigQuery`
+- `Jupyter Notebook`
+- `FastAPI`
+- `Render.com`
+- `Scikit-learn`
+- `Pandas`
+🌐**FastAPI Server**
+`https://walmart-api-y60v.onrender.com/docs#/`: You can check out this link to get the data. Note that `predict` is the API endpoint for the machine learning model.
+
 This project will use Google Bigquery for its data warehouse storage. The data warehouse is structured using Star Schema to minimize storage and optimize perfomance for analysis tool, (see `section 3`). After that is the cleaning and data prepping for the machine learning (see `Section 4`). Finally this project run SQL to report on the business perfomance by revenue, profit, top selling product, worst selling store, ... and implement a servers to host API endpoints for those functions (see `section 5`)
-2) **Data Profiling & Quality Assessment**
+1) **Data Profiling & Quality Assessment**
 During the profling of the data to find correlations between `reorder_point` and `reorder_quantity`, `inventory_level` and `actual_demand`, the data suggests that there is lack of real world logic about them. The `reorder_point` supposed to suggest the need to restock supply for a specific item in the store, but the observation make no sense, reorder point would sometimes go up when demands and inventory drop, and sometimes go down when demands rises. This suggest the dataset contain synthetic, randomized data. This conclusion is also more concrete when looking at the correlation of unit price of a store given a specific product and customer loyalty point, there seems to be no price logic involving the product, furthermore solidifying the conclusion.
 
 ```SQL
@@ -10,7 +22,7 @@ During the profling of the data to find correlations between `reorder_point` and
     WHERE product_name = 'TV'
     ORDER BY store_id, transaction_date
 ```
-![alt text](images/logi1c_flaw1.png)
+![alt text](images/logic_flaw1.png)
 
 ```SQL
     SELECT product_name, store_id, transaction_date, quantity_sold, unit_price, promotion_applied, customer_loyalty_level
@@ -43,3 +55,4 @@ During the profling of the data to find correlations between `reorder_point` and
 5) **API Endpoint Setup**
 - Use render to host a server
 - Use FastAPI to create API endpoints, and load the machine learning model, ran SQL to report data such as best/worst selling product and top/worst store based on their total sales, most paying customer based on his/her spending. Finally sales data (revenue, profit, cost, gross margin) depending on user input date. 
+![alt text](images/fast_api_server.png)
