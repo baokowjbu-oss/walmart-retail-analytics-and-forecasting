@@ -74,7 +74,7 @@ def get_top_sellers():
         
     except Exception as e:
         return {"error": str(e)}
-@app.get("analytics/worst-products")
+@app.get("/analytics/worst-products")
 def get_worst_sellers():
     try:
         client = bigquery.Client()
@@ -101,7 +101,7 @@ def get_worst_sellers():
             return {"worst_sellers": worst_sellers}
     except Exception as e:
         return {"error" : str(e)}
-@app.get("analytics/top-stores")
+@app.get("/analytics/top-stores")
 def get_top_stores():
     try:
         client = bigquery.Client()
@@ -117,7 +117,7 @@ def get_top_stores():
         return {"top_stores" : [{"store_id": row.store_id, "total_sales" : row.total_sales} for row in query_result]}
     except Exception as e:
         return {"error" : str(e)}
-@app.get("analytics/worst-stores")
+@app.get("/analytics/worst-stores")
 def get_worst_stores():
     try:
         client = bigquery.Client()
@@ -150,7 +150,7 @@ def get_most_paying_customer():
         return {"top_pay_customer" : [{"customer_id": row.customer_id, "total_spent" : row.total_spent} for row in query_result]}
     except Exception as e:
         return {"error" : str(e)}
-@app.get("analytics/sales-recap")
+@app.get("/analytics/sales-recap")
 def get_sales_trend(time_interval: str = "month"):
     try:
         valid_time_interval = ["day", "week", "month", "quarter"]
