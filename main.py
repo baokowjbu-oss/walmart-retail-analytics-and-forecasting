@@ -75,7 +75,7 @@ def get_top_sellers():
     except Exception as e:
         return {"error": str(e)}
 @app.get("/analytics/worst-products")
-def get_worst_sellers():
+def get_worst_products():
     try:
         client = bigquery.Client()
         query = """
@@ -95,7 +95,7 @@ def get_worst_sellers():
                 "product_name" : row.product_name,
                 "total_sale" : row.total_product_sale
             })
-            return {"worst_sellers": worst_sellers}
+        return {"worst_sellers": worst_sellers}
     except Exception as e:
         return {"error" : str(e)}
 @app.get("/analytics/top-stores")
