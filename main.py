@@ -148,7 +148,7 @@ def get_most_paying_customer():
     except Exception as e:
         return {"error" : str(e)}
 @app.get("/analytics/sales-recap")
-def get_sales_trend(time_interval: str = "month", start_date: Optional[str] = None, end_date: Optional[str]):
+def get_sales_trend(time_interval: str = "month", start_date: Optional[str] = None, end_date: Optional[str] = None):
     try:
         valid_time_interval = ["day", "week", "month", "quarter"]
         if time_interval.lower() not in valid_time_interval:
