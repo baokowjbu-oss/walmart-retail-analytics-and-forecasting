@@ -153,6 +153,8 @@ def get_sales_trend(time_interval: str = "month", start_date: Optional[str] = No
         valid_time_interval = ["day", "week", "month", "quarter"]
         if time_interval.lower() not in valid_time_interval:
             return {"error" : "invalid time interval. Valid time interval is day, week, month, quarter."}
+
+        where_clause = ""
         if start_date and end_date:
             start_int = int(start_date.replace("-", ""))
             end_int = int(end_date.replace("-", ""))
