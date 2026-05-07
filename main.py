@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from google.cloud import bigquery
 from google.auth.exceptions import DefaultCredentialsError
 from fastapi.middleware.cors import CORSMiddleware
+from typing import Optional
 import joblib
 import pandas as pd
 
