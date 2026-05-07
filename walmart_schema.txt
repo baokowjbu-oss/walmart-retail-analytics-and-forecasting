@@ -1,0 +1,9 @@
+dim_store: store_id, store_location
+dim_date: date_id, transaction_date, week day,  holiday_indicator
+dim_customer: customer_id, customer_age, customer_gender, customer_income, customer_loyalty_level
+dim_product: product_id, product_name, category, base_unit_price
+dim_supply: supplier_id, supplier_lead_time
+dim_weather: weather_id, weather_condition
+dim_promotion: promotion_id, promotion_type
+fact_transaction: transaction_id, date_id, store_id, customer_id, product_id, promotion_id, weather_id, quantity_sold, unit_price, payment_method, actual_demand
+fact_inventory: date_id, store_id, product_id, supplier_id, inventory_level, reorder_point, reorder_quantity, stockout_indicator
